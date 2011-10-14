@@ -1,10 +1,29 @@
+import processing.core.*; 
+import processing.xml.*; 
+
+import java.applet.*; 
+import java.awt.Dimension; 
+import java.awt.Frame; 
+import java.awt.event.MouseEvent; 
+import java.awt.event.KeyEvent; 
+import java.awt.event.FocusEvent; 
+import java.awt.Image; 
+import java.io.*; 
+import java.net.*; 
+import java.text.*; 
+import java.util.*; 
+import java.util.zip.*; 
+import java.util.regex.*; 
+
+public class fire extends PApplet {
+
 int X=400;
 int Y=400;
 
-color[][] previous = new color[X][Y];
-color[][] next = new color[X][Y];
+int[][] previous = new int[X][Y];
+int[][] next = new int[X][Y];
 
-void setup() {
+public void setup() {
   size(400, 400);
   randomSeed(0);
   colorMode(HSB, 100);
@@ -17,7 +36,7 @@ void setup() {
   }
 }
 
-void draw() {
+public void draw() {
   generateSeed();
   firing();
   
@@ -36,16 +55,16 @@ void draw() {
   }
 }
 
-void generateSeed() {
+public void generateSeed() {
   for(int i=0; i<width; i++) {
-    int h = int(random(20));
-    int s = int(random(50, 100));
-    int b = int(random(20, 100));
+    int h = PApplet.parseInt(random(20));
+    int s = PApplet.parseInt(random(50, 100));
+    int b = PApplet.parseInt(random(20, 100));
     next[i][Y-1] = color(h, s, b);
   }
 }
 
-void firing() {
+public void firing() {
   for(int i=0; i<height-1; i++) {
     for(int j=0; j<width; j++) {
       float h=0, s=0, b=0;
@@ -81,9 +100,13 @@ void firing() {
       
       h/=n;
       s/=n;
-      b/=(n+0.1);
-      color newColor = color(int(h), int(s), int(b));
+      b/=(n+0.1f);
+      int newColor = color(PApplet.parseInt(h), PApplet.parseInt(s), PApplet.parseInt(b));
       next[j][i] = newColor;
     }
+  }
+}
+  static public void main(String args[]) {
+    PApplet.main(new String[] { "--bgcolor=#FFFFFF", "fire" });
   }
 }
