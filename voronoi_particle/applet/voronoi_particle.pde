@@ -6,7 +6,7 @@ VoronoiGenerator vg;
 // constants
 int SEEDS = 400;
 
-float simplify = 1.5;
+float simplify = 1.0;
 int speedConst = 250;
 
 void setup() {
@@ -48,6 +48,11 @@ void draw() {
     pg.endDraw();
     
     vg.proc();
+    
+    if(vg.dead()) {
+      this.vg=null;
+      print("reset");
+    }
     
     image(pg, 0, 0, width, height);
   }
@@ -119,6 +124,16 @@ class VoronoiGenerator {
       }
     }
   }
+  
+  public boolean dead() {
+    for(int i=0; i<seeds.size(); i++) {
+      VoronoiParticle vp = (VoronoiParticle)(this.seeds.get(i));
+      if(!vp.dead()) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 class VoronoiParticle {
@@ -132,18 +147,13 @@ class VoronoiParticle {
   PGraphics particleGraphics;
   ArrayList area;
   
-  public boolean invalid() {
-    if(this.area.size()==0) return true;
-    else return false;
-  }
-  
   public VoronoiParticle(PVector pos, PVector singularity) {
     this.pos = pos;
     float velx = (pos.x-singularity.x) / sqrt(sq(pos.x-singularity.x) + sq(pos.y-singularity.y));
     float vely = (pos.y-singularity.y) / sqrt(sq(pos.x-singularity.x) + sq(pos.y-singularity.y));
     this.vel = new PVector(velx/(abs(pos.x-singularity.x)+100)*speedConst*random(0.5, 1.5), vely/(abs(pos.y-singularity.y)+100)*speedConst*random(0.5, 1.5));
     this.acc = new PVector(0, 0.2);
-    this.theta_vel=random(-PI/20, PI/20);
+    this.theta_vel=random(-PI/20, PI/20) / sqrt(sq(pos.x-singularity.x) + sq(pos.y-singularity.y)) * 100;
     
     this.area = new ArrayList();
   }
@@ -159,6 +169,16 @@ class VoronoiParticle {
   public int y() {
     return int(this.pos.y);
   }
+  
+  public boolean invalid() {
+    if(this.area.size()==0) return true;
+    else return false;
+  }
+  
+  public boolean dead() {
+    if(this.pos.y > 2*pg.height || this.invalid()) return true;
+    else return false;
+  }
 
   public void setFragment() {
     int mx=10000, my=10000, Mx=-1, My=-1;
@@ -169,7 +189,6 @@ class VoronoiParticle {
       if(vec.y < my) my = int(vec.y);
       if(vec.y > My) My = int(vec.y);
     }
-    println((Mx-mx+1)+" "+(My-my+1));
     this.particleGraphics = createGraphics(Mx-mx+1, My-my+1, P2D);
     this.particleGraphics.beginDraw();
     this.particleGraphics.loadPixels();
