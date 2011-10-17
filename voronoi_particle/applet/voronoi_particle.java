@@ -25,7 +25,7 @@ VoronoiGenerator vg;
 // constants
 int SEEDS = 400;
 
-float simplify = 2.0f;
+float simplify = 1.5f;
 int speedConst = 250;
 
 public void setup() {
