@@ -26,7 +26,9 @@ VoronoiGenerator vg;
 int SEEDS = 400;
 
 float simplify = 1.0f;
-int speedConst = 250;
+int speedConst = 800;
+float airFriction = 0.01f;
+float gravity = 0.2f;
 
 public void setup() {
   size(600, 600);
@@ -129,7 +131,7 @@ class VoronoiGenerator {
   public void drawVoronoi() {
     for(int i=0; i<seeds.size(); i++) {
       VoronoiParticle vp = (VoronoiParticle)(this.seeds.get(i));
-      if(!vp.invalid()) {
+      if(!vp.invalid() && !vp.dead()) {
         vp.drawParticle();
       }
     }
@@ -138,7 +140,7 @@ class VoronoiGenerator {
   public void proc() {
     for(int i=0; i<seeds.size(); i++) {
       VoronoiParticle vp = (VoronoiParticle)(this.seeds.get(i));
-      if(!vp.invalid()) {
+      if(!vp.invalid() && !vp.dead()) {
         vp.proc();
       }
     }
@@ -171,7 +173,7 @@ class VoronoiParticle {
     float velx = (pos.x-singularity.x) / sqrt(sq(pos.x-singularity.x) + sq(pos.y-singularity.y));
     float vely = (pos.y-singularity.y) / sqrt(sq(pos.x-singularity.x) + sq(pos.y-singularity.y));
     this.vel = new PVector(velx/(abs(pos.x-singularity.x)+100)*speedConst*random(0.5f, 1.5f), vely/(abs(pos.y-singularity.y)+100)*speedConst*random(0.5f, 1.5f));
-    this.acc = new PVector(0, 0.2f);
+    this.acc = new PVector(0, gravity);
     this.theta_vel=random(-PI/20, PI/20) / sqrt(sq(pos.x-singularity.x) + sq(pos.y-singularity.y)) * 100;
     
     this.area = new ArrayList();
@@ -195,7 +197,7 @@ class VoronoiParticle {
   }
   
   public boolean dead() {
-    if(this.pos.y > 2*pg.height || this.invalid()) return true;
+    if(this.pos.y > 1.2f*pg.height || this.invalid()) return true;
     else return false;
   }
 
@@ -233,6 +235,8 @@ class VoronoiParticle {
   public void proc() {
     this.pos.add(this.vel);
     this.vel.add(this.acc);
+    this.vel.x -= this.vel.x*airFriction;
+    this.vel.y -= this.vel.y*airFriction;
     this.theta += this.theta_vel;
   }
 }
