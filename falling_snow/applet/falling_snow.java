@@ -42,15 +42,13 @@ public void setup() {
 public void draw() {
   if(random(0,1) < probability && particles.size() < 10) {
     PVector newpos = new PVector(random(0, height/simplify), -10);
-    float theta = random(PI/8*3, PI/8*5);
-    float r = random(0.0f, 2.0f);
+    float theta = random(PI/6*2, PI/6*4);
+    float r = random(0.0f, 5.0f);
     PVector vel = new PVector(r*cos(theta), r*sin(theta));
     particles.add(new Particle(newpos, vel, PApplet.parseInt(random(120, 150))));
     println(particles.size());
   }
-  
-  background(0);
-  
+    
   // draw metaballs
   for(int i=0; i<particles.size(); i++) {
     Particle p = (Particle)this.particles.get(i);
@@ -66,10 +64,10 @@ public void draw() {
   pg.loadPixels();
   for(int y=0; y<pg.height; y++) {
     for(int x=0; x<pg.width; x++) {
-      pg.pixels[x+y*pg.width] = color(mr[x][y], mg[x][y], mb[x][y]);
-      mr[x][y] = 0;
-      mg[x][y] = 0;
-      mb[x][y] = 0;
+      pg.pixels[x+y*pg.width] = color(mr[x][y], mg[x][y], mb[x][y], 191);
+      mr[x][y] /= 1.05f;
+      mg[x][y] /= 1.05f;
+      mb[x][y] /= 1.05f;
     }
   }
   pg.updatePixels();
@@ -104,9 +102,9 @@ class Particle {
     
     this.acc = new PVector(0, 0.04f);
     
-    this.r_ratio = random(0.7f, 1);
-    this.g_ratio = random(0.7f, 1);
-    this.b_ratio = random(0.7f, 1);
+    this.r_ratio = random(0.5f, 1);
+    this.g_ratio = random(0.5f, 1);
+    this.b_ratio = random(0.5f, 1);
     this.ratio = random(0.2f, 0.8f);
   }
   
