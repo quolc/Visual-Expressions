@@ -4,7 +4,7 @@ PGraphics pg;
 int mr, mg, mb;
 
 float simplify = 2;
-int far_threshold = 5000;
+int far_threshold = 500;
 
 boolean stop = false;
 
