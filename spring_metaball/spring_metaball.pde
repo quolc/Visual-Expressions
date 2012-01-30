@@ -116,9 +116,6 @@ class Particle {
     for(int i=0; i<connects; i++) {
       PVector vec = new PVector(particles[this.connections[i]].pos.x - this.pos.x, 
                                 particles[this.connections[i]].pos.y - this.pos.y);
-      float r = particles[this.connections[i]].pos.dist(this.pos);
-      vec.normalize();
-      vec.mult(r);
       vec.mult(K);
       this.acc.add(vec);
       }
