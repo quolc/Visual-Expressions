@@ -46,9 +46,9 @@ void draw() {
   for(int y=0; y<pg.height; y++) {
     for(int x=0; x<pg.width; x++) {
       pg.pixels[x+y*pg.width] = color(mr[x][y], mg[x][y], mb[x][y], 191);
-      mr[x][y] /= 1.05;
-      mg[x][y] /= 1.05;
-      mb[x][y] /= 1.05;
+      mr[x][y] = int(sqrt(mr[x][y]))*2;
+      mg[x][y] = int(sqrt(mg[x][y]))*2;
+      mb[x][y] = int(sqrt(mb[x][y]))*2;
     }
   }
   pg.updatePixels();
@@ -86,7 +86,7 @@ class Particle {
     this.r_ratio = random(0.5, 1);
     this.g_ratio = random(0.5, 1);
     this.b_ratio = random(0.5, 1);
-    this.ratio = random(0.2, 0.8);
+    this.ratio = random(0.5, 1.0);
   }
   
   public void drawMetaball(int x, int y) {
