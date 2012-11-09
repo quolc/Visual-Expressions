@@ -1,3 +1,5 @@
+// data from
+// http://k-hiura.cocolog-nifty.com/blog/2009/06/post-9c5b.html
 float[][] colorTable = {
 {0.03215,0.00000,0.06704}, // 380nm
 {0.04994,0.00000,0.11193},
@@ -41,6 +43,8 @@ float[][] colorTable = {
 {0.01729,0.00000,0.00264},
 {0.00000,0.00000,0.00000}};
 
+// data from
+// http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1279132/?page=5
 // range = 0 - 100
 // 420(blue) / 534(green) / 564(red)
 float[][] retinaTable = {
