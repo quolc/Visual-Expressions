@@ -1,16 +1,16 @@
 Particle[] particles;
 int N=20;
-float K=0.002;
+float K=0.005;
 float pathprob=0.5;
 
 // metaball variables
 PGraphics pg;
 int mr[][], mg[][], mb[][];
 int meta_const = 10000;
-float divisor = 1.5;
+float divisor = 2.0;
 int shut_r = 80;
 
-float simplify = 2.0;
+float simplify = 3.0;
 int far_threshold = 500;
 
 void keyPressed() {
@@ -18,7 +18,7 @@ void keyPressed() {
 }
 
 void setup() {
-  size(600, 600, P2D);
+  size(640, 640);
 
   particles = new Particle[N];
   for(int i=0; i<N; i++) {
